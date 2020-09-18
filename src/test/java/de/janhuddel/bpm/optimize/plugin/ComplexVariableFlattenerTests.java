@@ -1,4 +1,4 @@
-package de.provinzial.workflow.bpm.optimize.plugin;
+package de.janhuddel.bpm.optimize.plugin;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
