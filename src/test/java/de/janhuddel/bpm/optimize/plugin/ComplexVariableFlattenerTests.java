@@ -12,6 +12,20 @@ import org.junit.jupiter.api.Test;
 public class ComplexVariableFlattenerTests {
 
 	@Test
+	public void testStringWithDigitsOnly() throws Exception {
+		String json = "{\"zipcode\":\"24114\"}";
+
+		ComplexVariableFlattener uut = new ComplexVariableFlattener();
+		List<PluginVariableDto> variables = uut.adaptVariables(createVariable("var", json));
+
+		assertAll("variables", //
+				() -> assertEquals(1, variables.size()), //
+				() -> assertEquals("24114", variables.get(0).getValue()), //
+				() -> assertEquals("String", variables.get(0).getType()));
+
+	}
+
+	@Test
 	public void testSimpleString() throws Exception {
 		String json = "\"Hello\"";
 

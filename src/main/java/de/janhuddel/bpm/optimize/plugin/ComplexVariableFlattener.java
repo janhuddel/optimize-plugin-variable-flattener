@@ -3,6 +3,7 @@ package de.janhuddel.bpm.optimize.plugin;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,9 +30,7 @@ public class ComplexVariableFlattener
 
 	// in the Camunda engine, it must be ensured that Date is serialized in this format.
 	// (Engine Config (SPI): de.provinzial.bpm.spin.dataformat.JacksonDataFormatConfigurator)
-	private static final DateFormat engineDateFormat = new StdDateFormat() //
-			.withTimeZone(TimeZone.getDefault()) //
-			.withColonInTimeZone(true);
+	private static final DateFormat engineDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
 	// ISO8601-formatted Date for Optimze (without colon)
 	private static final DateFormat optimizeDateFormat = new StdDateFormat() //
