@@ -98,7 +98,7 @@ public class ComplexVariableFlattener
 		newVariable.setVersion(origin.getVersion());
 
 		// set name, type and value
-		if ("root".equals(name)) {
+		if (JsonFlattener.ROOT.equals(name)) {
 			// the name "root" is used by the flattener if the JSON is a string or array (no object)
 			newVariable.setName(origin.getName());
 		} else {
