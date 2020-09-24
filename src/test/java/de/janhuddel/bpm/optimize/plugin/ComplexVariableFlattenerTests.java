@@ -9,8 +9,6 @@ import java.util.List;
 import org.camunda.optimize.plugin.importing.variable.PluginVariableDto;
 import org.junit.jupiter.api.Test;
 
-import de.janhuddel.bpm.optimize.plugin.ComplexVariableFlattener;
-
 public class ComplexVariableFlattenerTests {
 
 	@Test
