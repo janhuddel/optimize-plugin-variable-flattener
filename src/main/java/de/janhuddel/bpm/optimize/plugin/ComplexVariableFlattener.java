@@ -1,21 +1,18 @@
 package de.janhuddel.bpm.optimize.plugin;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.TimeZone;
 
 import org.camunda.optimize.plugin.importing.variable.PluginVariableDto;
 import org.camunda.optimize.plugin.importing.variable.VariableImportAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.github.wnameless.json.flattener.FlattenMode;
 import com.github.wnameless.json.flattener.JsonFlattener;
 import com.github.wnameless.json.flattener.JsonifyArrayList;
@@ -30,12 +27,10 @@ public class ComplexVariableFlattener
 
 	// in the Camunda engine, it must be ensured that Date is serialized in this format.
 	// (Engine Config (SPI): de.provinzial.bpm.spin.dataformat.JacksonDataFormatConfigurator)
-	private static final DateFormat engineDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+	private static final DateTimeFormatter engineDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
 	// ISO8601-formatted Date for Optimze (without colon)
-	private static final DateFormat optimizeDateFormat = new StdDateFormat() //
-			.withTimeZone(TimeZone.getDefault()) //
-			.withColonInTimeZone(false);
+	private static final DateTimeFormatter optimizeDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
 	@Override
 	public List<PluginVariableDto> adaptVariables(List<PluginVariableDto> variables) {
@@ -112,7 +107,7 @@ public class ComplexVariableFlattener
 		} else if (value instanceof String) {
 			String stringValue = String.valueOf(value);
 
-			Optional<Date> optDate = this.parseDate(stringValue);
+			Optional<OffsetDateTime> optDate = this.parsePossibleDate(stringValue);
 			if (optDate.isPresent()) {
 				newVariable.setType("Date");
 				newVariable.setValue(optimizeDateFormat.format(optDate.get()));
@@ -145,10 +140,10 @@ public class ComplexVariableFlattener
 		return Optional.of(newVariable);
 	}
 
-	private Optional<Date> parseDate(String dateAsString) {
+	private Optional<OffsetDateTime> parsePossibleDate(String dateAsString) {
 		try {
-			return Optional.of(engineDateFormat.parse(dateAsString));
-		} catch (ParseException e) {
+			return Optional.of(OffsetDateTime.parse(dateAsString, engineDateFormat));
+		} catch (DateTimeParseException e) {
 			return Optional.empty();
 		}
 	}
