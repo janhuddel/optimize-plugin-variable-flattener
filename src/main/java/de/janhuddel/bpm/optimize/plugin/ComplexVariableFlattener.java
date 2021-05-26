@@ -90,6 +90,7 @@ public class ComplexVariableFlattener
 		newVariable.setProcessDefinitionKey(origin.getProcessDefinitionKey());
 		newVariable.setProcessInstanceId(origin.getProcessInstanceId());
 		newVariable.setVersion(origin.getVersion());
+		newVariable.setTimestamp(origin.getTimestamp());
 
 		// set name, type and value
 		if (JsonFlattener.ROOT.equals(name)) {
